@@ -16,26 +16,47 @@ char is 32 bits wide,
 bool is 8 bits wide.
 */
 
-// fn main() {
-//     // Program entry point
-//     let x: f32 = 2_f32; // Mutable variable binding
-//     println!("{x}"); // Macro for printing, like printf
-// }
+fn main() {
+    // Program entry point
+    let x: f32 = 2_f32; // Mutable variable binding
+    println!("{x}"); // Macro for printing, like printf
 
-fn multiply(x: i16, y: i16) -> i16 {
-    x * y
+
+    let matrix = [
+        [101, 102, 103], // <-- the comment makes rustfmt add a newline
+        [201, 202, 203],
+        [301, 302, 303],
+    ];
+
+    println!("matrix:");
+    pretty_print(&matrix);
+
+    let transposed = transpose(matrix);
+    println!("transposed:");
+    pretty_print(&transposed);
 }
 
-fn main() {
-    let x: i8 = 15;
-    let y: i32 = 10000;
+fn transpose(matrix: [[i32; 3]; 3]) -> [[i32; 3]; 3] {
+    let mut transpose_matrix: [[i32; 3]; 3] = [[0; 3]; 3];
+    for i in 0..matrix.len() {
+        for y in 0..matrix[i].len() {
+            transpose_matrix[y][i] = matrix[i][y];
+        }
+    }
+    return transpose_matrix;
+}
 
-    let modified_y: i16 = i16::try_from(y).unwrap_or(0);
-    let modified_x: i16 = x.into();
-    
-// TODO: 
-    println!("{}", (modified_x * modified_y));
-
-
-    println!("{x} * {y} = {}", multiply(x.into(),  i16::try_from(y).unwrap_or(0)));
+fn pretty_print(matrix: &[[i32; 3]; 3]) {
+    for i in 0..matrix.len() {
+        print!("(");
+        for y in 0..matrix[i].len() {
+            let mut separator: &str = if y != 0 {
+                " "
+            } else {
+                ""
+            };
+            print!("{}[{}]", separator, matrix[i][y])
+        }
+        println!(")");
+    }
 }
